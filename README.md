@@ -2,19 +2,8 @@
 $ git clone https://github.com/Trifonix/social-web.git
 $ cd social-web
 $ npm i
-```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+Запустить БД
+$ npm run start || npm run start:dev
 ```
 
 ## Test
