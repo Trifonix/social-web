@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,9 +16,21 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('/signup')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  @Post('/signin')
+  async signIn(
+    @Body('email') email: string,
+    @Body('password') password: string,
+  ) {
+    const token = await this.usersService.signIn(email, password);
+    if (!token) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    return token;
   }
 
   @Get()
