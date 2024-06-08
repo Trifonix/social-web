@@ -7,15 +7,14 @@ $ npm run start || npm run start:dev
 http://localhost:4444/
 ```
 
-## Test
+## Проверка регистрации-аутентификации
 
 ```bash
-# unit tests
-$ npm run test
+curl -X POST http://localhost:4444/users/signup \
+-H "Content-Type: application/json" \
+-d '{"username": "Ivan", "email": "nikanorov@gmail.com", "password": "superPuperPass"}'
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+curl -X POST http://localhost:4444/users/signin \
+-H "Content-Type: application/json" \
+-d '{"email": "nikanorov@gmail.com", "password": "superPuperPass"}'
 ```
