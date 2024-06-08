@@ -5,9 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { DataSource } from 'typeorm';
 import { User } from './users/entities/user.entity';
-import { Message } from './messages/entities/message.entity';
 
 @Module({
   imports: [
@@ -19,18 +17,16 @@ import { Message } from './messages/entities/message.entity';
       username: 'root',
       password: '',
       database: 'social_web_db',
-      entities: [User, Message],
+      entities: [User],
       synchronize: true,
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: 'topSecret51', // В реальном приложении используйте переменные окружения
-      signOptions: { expiresIn: 3600 }, // Время жизни токена (1 час)
+      secret: 'topSecret51',
+      signOptions: { expiresIn: 3600 },
     }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}
