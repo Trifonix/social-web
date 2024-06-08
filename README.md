@@ -31,3 +31,9 @@ curl -X POST http://localhost:4444/users/login \
 -H "Content-Type: application/json" \
 -d '{"email": "nikanorov@gmail.com", "password": "superPuperPass"}'
 ```
+
+### Документация
+
+```bash
+http://localhost:4444/api
+```
