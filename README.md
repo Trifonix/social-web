@@ -37,3 +37,11 @@ curl -X POST http://localhost:4444/users/login \
 ```bash
 http://localhost:4444/api
 ```
+
+#### Проверка ошибок (eslint+prettier)
+
+```bash
+npm run format
+npm run lint:fix
+npm run lint
+```
