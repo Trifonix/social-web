@@ -27,7 +27,7 @@ curl -X POST http://localhost:4444/users/signup \
 ```
 
 ```bash
-curl -X POST http://localhost:4444/users/signin \
+curl -X POST http://localhost:4444/users/login \
 -H "Content-Type: application/json" \
 -d '{"email": "nikanorov@gmail.com", "password": "superPuperPass"}'
 ```
