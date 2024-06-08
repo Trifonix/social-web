@@ -1,12 +1,7 @@
 ```bash
 $ git clone https://github.com/Trifonix/social-web.git
 $ cd social-web
-```
-
-## Installation
-
-```bash
-$ npm install
+$ npm i
 ```
 
 ## Running the app
