@@ -4,6 +4,7 @@ $ cd social-web
 $ npm i
 Запустить БД
 $ npm run start || npm run start:dev
+http://localhost:4444/
 ```
 
 ## Test
