@@ -18,7 +18,9 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(
+    createUserDto: CreateUserDto,
+  ): Promise<{ username: string; email: string; token: string }> {
     const { username, email, password } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({
@@ -32,39 +34,48 @@ export class UsersService {
     return { ...user, token };
   }
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<User | null> {
     return this.usersRepository.findOne({ where: { id } });
   }
 
-  async findByEmail(email: string) {
-    return this.usersRepository.findOne({ where: { email } });
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.usersRepository.findOne({ where: { email } });
+    return user || null; // Если пользователь не найден, возвращаем null
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User | null> {
     await this.usersRepository.update(id, updateUserDto);
     return this.findOne(id);
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<{ deleted: boolean }> {
     await this.usersRepository.delete(id);
     return { deleted: true };
   }
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(
+    email: string,
+    pass: string,
+  ): Promise<{ username: string; id: string } | null> {
     const user = await this.findByEmail(email);
     if (user && (await bcrypt.compare(pass, user.password))) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...userWithoutPassword } = user;
-      return userWithoutPassword;
+      const { ...userWithoutPassword } = user;
+      return {
+        username: userWithoutPassword.username,
+        id: userWithoutPassword.id.toString(),
+      };
     }
     return null;
   }
 
-  async login(user: any) {
+  async login(user: {
+    username: string;
+    id: string;
+  }): Promise<{ access_token: string }> {
     const payload = { username: user.username, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
@@ -82,7 +93,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: {
+    sub: string;
+    username: string;
+  }): Promise<{ userId: string; username: string }> {
     return { userId: payload.sub, username: payload.username };
   }
 }
